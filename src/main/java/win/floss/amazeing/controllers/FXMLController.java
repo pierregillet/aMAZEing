@@ -1,4 +1,4 @@
-package org.openjfx;
+package win.floss.amazeing.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

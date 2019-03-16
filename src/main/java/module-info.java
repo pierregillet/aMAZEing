@@ -2,6 +2,8 @@ module hellofx {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens org.openjfx to javafx.fxml;
-    exports org.openjfx;
+    opens win.floss.amazeing to javafx.fxml;
+    exports win.floss.amazeing.controllers;
+    exports win.floss.amazeing.helpers;
+    exports win.floss.amazeing.models;
 }
