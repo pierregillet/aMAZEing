@@ -1,10 +1,10 @@
 package win.floss.amazeing.models;
 
 
-class Node {
+public class Node {
     private int id;
 
-    public Node(int id) {
+    Node(int id) {
         this.id = id;
     }
 

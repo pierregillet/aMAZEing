@@ -9,9 +9,12 @@ import javafx.stage.Stage;
 
 
 public class MainApp extends Application {
+    private static Stage stage;
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/win/floss/amazeing/scene.fxml"));
+        setStage(stage);
+        Parent root = FXMLLoader.load(getClass().getResource("/win/floss/amazeing/MainMenu.fxml"));
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/win/floss/amazeing/styles.css").toExternalForm());
@@ -31,5 +34,13 @@ public class MainApp extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    public static void setStage(Stage stage) {
+        MainApp.stage = stage;
     }
 }
