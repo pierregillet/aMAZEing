@@ -19,7 +19,7 @@ public class Graph {
         }
     }
 
-    public Node searchNodeById(int id) {
+    Node searchNodeById(int id) {
         for (Vector<Node> row : nodes) {
             for (Node node : row) {
                 if (node.getId() == id) {
