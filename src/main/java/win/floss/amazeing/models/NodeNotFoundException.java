@@ -1,4 +1,4 @@
-package win.floss.amazeing.helpers;
+package win.floss.amazeing.models;
 
 public class NodeNotFoundException extends Exception {
 

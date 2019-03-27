@@ -10,14 +10,12 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import win.floss.amazeing.helpers.NodeNotFoundException;
+import win.floss.amazeing.models.NodeNotFoundException;
 import win.floss.amazeing.models.Graph;
 import win.floss.amazeing.models.Maze;
-import win.floss.amazeing.models.Node;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
 public class MazeController implements Initializable {
     private Maze maze;

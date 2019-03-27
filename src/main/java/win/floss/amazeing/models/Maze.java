@@ -1,7 +1,5 @@
 package win.floss.amazeing.models;
 
-import win.floss.amazeing.helpers.NodeNotFoundException;
-
 import java.util.Vector;
 
 public class Maze {
@@ -15,8 +13,8 @@ public class Maze {
     }
 
     public void visitNode(int id) throws NodeNotFoundException {
-        Node node = graph.searchNodeById(id);
-        if (node == null) {
+        Node node = graph.searchNodeById(id).getNode();
+        if (null == node) {
             throw new NodeNotFoundException();
         }
     }

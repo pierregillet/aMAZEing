@@ -4,6 +4,5 @@ module hellofx {
 
     opens win.floss.amazeing to javafx.fxml;
     exports win.floss.amazeing.controllers;
-    exports win.floss.amazeing.helpers;
     exports win.floss.amazeing.models;
 }

@@ -1,14 +1,14 @@
 package win.floss.amazeing.models;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Vector;
 
 public class Graph {
     private Vector<Vector<Node>> nodes;
-    private HashSet<Edge> adjacencyList;
+    private Vector<HashMap<Node, Vector<Node>>> adjacencyList;
 
     Graph(int width, int height) {
-        this.adjacencyList = new HashSet<>();
+        this.adjacencyList = new Vector<>();
         this.nodes = new Vector<>(height);
         for (int i = 0; i < height; i++) {
             Vector<Node> row = new Vector<>(width);
@@ -19,11 +19,17 @@ public class Graph {
         }
     }
 
-    Node searchNodeById(int id) {
-        for (Vector<Node> row : nodes) {
-            for (Node node : row) {
+//    Vector<Orientation> getWalls(Node node) {
+//        return null;
+//    }
+
+    NodePosition searchNodeById(int id) {
+        for (int rowIndex = 0; rowIndex < nodes.size(); rowIndex++) {
+            Vector<Node> row = nodes.get(rowIndex);
+            for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
+                Node node = row.get(columnIndex);
                 if (node.getId() == id) {
-                    return node;
+                    return new NodePosition(node, rowIndex, columnIndex);
                 }
             }
         }
@@ -38,7 +44,7 @@ public class Graph {
         this.nodes = nodes;
     }
 
-    HashSet<Edge> getAdjacencyList() {
+    Vector<HashMap<Node, Vector<Node>>> getAdjacencyList() {
         return adjacencyList;
     }
 
