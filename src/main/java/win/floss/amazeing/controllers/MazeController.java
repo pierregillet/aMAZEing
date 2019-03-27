@@ -10,12 +10,11 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import win.floss.amazeing.models.NodeNotFoundException;
-import win.floss.amazeing.models.Graph;
-import win.floss.amazeing.models.Maze;
+import win.floss.amazeing.models.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 public class MazeController implements Initializable {
     private Maze maze;
@@ -25,8 +24,10 @@ public class MazeController implements Initializable {
 
     class MazeCellHandler implements EventHandler<ActionEvent> {
         private final int id;
+        private Maze maze;
 
-        MazeCellHandler(int id) {
+        MazeCellHandler(Maze maze, int id) {
+            this.maze = maze;
             this.id = id;
         }
 
@@ -50,25 +51,28 @@ public class MazeController implements Initializable {
         int width = graph.getWidth();
         int height = graph.getHeight();
 
-//        this.mazeGridpane.setGridLinesVisible(true);
-
         for (int row = 0; row < height; row++) {
             RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setVgrow(Priority.ALWAYS) ; // allow row to grow
-            rowConstraints.setFillHeight(true); // ask nodes to fill height for row
+            rowConstraints.setVgrow(Priority.ALWAYS);
+            rowConstraints.setFillHeight(true);
             mazeGridpane.getRowConstraints().add(rowConstraints);
         }
 
         for (int column = 0; column < width; column++) {
             ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setHgrow(Priority.ALWAYS) ; // allow row to grow
-            columnConstraints.setFillWidth(true); // ask nodes to fill height for row
+            columnConstraints.setHgrow(Priority.ALWAYS);
+            columnConstraints.setFillWidth(true);
             mazeGridpane.getColumnConstraints().add(columnConstraints);
         }
 
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
+                int id = row * width + column;
+                NodePosition currentNodePosition = maze.getGraph().searchNodeById(id);
+                Graph currentGraph = maze.getGraph();
+                Vector<Orientation> walls = currentGraph.getWalls(currentNodePosition);
                 Button button = new Button();
+                button.setOnAction(new MazeCellHandler(maze, id));
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 mazeGridpane.add(button, column, row);
             }

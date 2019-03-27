@@ -5,10 +5,10 @@ import java.util.Vector;
 
 public class Graph {
     private Vector<Vector<Node>> nodes;
-    private Vector<HashMap<Node, Vector<Node>>> adjacencyList;
+    private HashMap<Node, Vector<Node>> adjacencyList;
 
     Graph(int width, int height) {
-        this.adjacencyList = new Vector<>();
+        this.adjacencyList = new HashMap<>();
         this.nodes = new Vector<>(height);
         for (int i = 0; i < height; i++) {
             Vector<Node> row = new Vector<>(width);
@@ -19,11 +19,57 @@ public class Graph {
         }
     }
 
-//    Vector<Orientation> getWalls(Node node) {
-//        return null;
-//    }
+    public Vector<Orientation> getWalls(NodePosition nodePosition) {
+        Vector<Orientation> walls = new Vector<>();
 
-    NodePosition searchNodeById(int id) {
+        Node currentNode = nodePosition.getNode();
+        int rowIndex = nodePosition.getRowIndex();
+        int columnIndex = nodePosition.getColumnIndex();
+
+        if (0 == rowIndex) {
+            walls.add(Orientation.TOP);
+        } else {
+            Node topNode = nodes.get(rowIndex - 1).get(columnIndex);
+            Vector<Node> adjacentNodes = getAdjacentNodes(currentNode);
+            if (null != adjacentNodes && !adjacentNodes.contains(topNode)) {
+                walls.add(Orientation.TOP);
+            }
+        }
+
+        if (nodes.size() - 1 == rowIndex) {
+            walls.add(Orientation.BOTTOM);
+        } else {
+            Node bottomNode = nodes.get(rowIndex + 1).get(columnIndex);
+            Vector<Node> adjacentNodes = getAdjacentNodes(currentNode);
+            if (null != adjacentNodes && !adjacentNodes.contains(bottomNode)) {
+                walls.add(Orientation.BOTTOM);
+            }
+        }
+
+        if (0 == columnIndex) {
+            walls.add(Orientation.LEFT);
+        } else {
+            Node leftNode = nodes.get(rowIndex).get(columnIndex - 1);
+            Vector<Node> adjacentNodes = getAdjacentNodes(currentNode);
+            if (null != adjacentNodes && !adjacentNodes.contains(leftNode)) {
+                walls.add(Orientation.LEFT);
+            }
+        }
+
+        if (nodes.get(rowIndex).size() - 1 == columnIndex) {
+            walls.add(Orientation.RIGHT);
+        } else {
+            Node rightNode = nodes.get(rowIndex).get(columnIndex + 1);
+            Vector<Node> adjacentNodes = getAdjacentNodes(currentNode);
+            if (null != adjacentNodes && !adjacentNodes.contains(rightNode)) {
+                walls.add(Orientation.RIGHT);
+            }
+        }
+
+        return walls;
+    }
+
+    public NodePosition searchNodeById(int id) {
         for (int rowIndex = 0; rowIndex < nodes.size(); rowIndex++) {
             Vector<Node> row = nodes.get(rowIndex);
             for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
@@ -36,15 +82,15 @@ public class Graph {
         return null;
     }
 
+    public Vector<Node> getAdjacentNodes(Node node) {
+        return adjacencyList.get(node);
+    }
+
     public Vector<Vector<Node>> getNodes() {
         return nodes;
     }
 
-    void setNodes(Vector<Vector<Node>> nodes) {
-        this.nodes = nodes;
-    }
-
-    Vector<HashMap<Node, Vector<Node>>> getAdjacencyList() {
+    public HashMap<Node, Vector<Node>> getAdjacencyList() {
         return adjacencyList;
     }
 

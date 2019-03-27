@@ -16,6 +16,8 @@ public class Maze {
         Node node = graph.searchNodeById(id).getNode();
         if (null == node) {
             throw new NodeNotFoundException();
+        } else {
+            path.add(node);
         }
     }
 
