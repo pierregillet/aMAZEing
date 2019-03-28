@@ -5,15 +5,20 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
 import win.floss.amazeing.models.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -22,9 +27,13 @@ import java.util.ResourceBundle;
 
 public class MazeController implements Initializable {
     private Maze maze;
+    final int maxLevel = 2;
 
     @FXML
     public GridPane mazeGridpane;
+
+    @FXML
+    public Button nextLevelButton;
 
     class MazeCellHandler implements EventHandler<ActionEvent> {
         private final int id;
@@ -56,6 +65,10 @@ public class MazeController implements Initializable {
         Coordinates endingPoint = maze.getEndingPoint();
         int width = graph.getWidth();
         int height = graph.getHeight();
+
+        if (maxLevel <= this.maze.getLevel()) {
+            nextLevelButton.setText("Game won, go back to menu");
+        }
 
         for (int row = 0; row < height; row++) {
             RowConstraints rowConstraints = new RowConstraints();
@@ -117,6 +130,36 @@ public class MazeController implements Initializable {
                 // Only catching a style error, not a critical error.
             }
         }
+        nextLevelButton.setDisable(false);
+    }
+
+    @FXML
+    public void goToNextLevel() {
+        int currentLevel = this.maze.getLevel();
+        URL url;
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        if (maxLevel > currentLevel) {
+            MazeGeneratorStrategy mazeGeneratorStrategy = new MazeGeneratorDepthFirst();
+            MazeSolverStrategy mazeSolverStrategy = new MazeSolverBreadthFirst();
+            Maze maze = new Maze(mazeGeneratorStrategy, mazeSolverStrategy, currentLevel + 1);
+            MazeController nextController = new MazeController(maze);
+            url = getClass().getResource("/win/floss/amazeing/Maze.fxml");
+            fxmlLoader.setLocation(url);
+            fxmlLoader.setController(nextController); // Create a controller instance
+        } else {
+            url = getClass().getResource("/win/floss/amazeing/MainMenu.fxml");
+            fxmlLoader.setLocation(url);
+        }
+
+        Parent root;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            throw new java.lang.RuntimeException("Could not load fxml file");
+        }
+        Stage stage = MainApp.getStage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     private void visitNode(int id) throws NodeNotFoundException {
@@ -138,7 +181,7 @@ public class MazeController implements Initializable {
             } else if (adjacentNodes.contains(selectedCell)) {
                 // else if it's a node that can be visited next add it to path
                 if (selectedCell.getCoordinates().equals(maze.getEndingPoint())) {
-                    System.out.println("Well done ! you solved the maze !");
+                    nextLevelButton.setDisable(false);
                 } else {
                     Node node = getNodeByCoordinates(selectedCell.getCoordinates());
                     if (null != node) {

@@ -18,8 +18,8 @@ public class Maze {
         this.mazeGenerator = mazeGenerator;
         this.mazeSolver = mazeSolver;
         this.level = level;
-        int width = level * 10;
-        int height = level * 10;
+        int width = level * 5;
+        int height = level * 5;
         startingPoint = new Coordinates(0, 0);
         endingPoint = new Coordinates(height - 1, width - 1);
         graph = mazeGenerator.generate(width, height, startingPoint, endingPoint);
@@ -72,4 +72,7 @@ public class Maze {
         return endingPoint;
     }
 
+    public int getLevel() {
+        return level;
+    }
 }

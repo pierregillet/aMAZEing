@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/8.0.172-ea"
-            xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
     <center>
     </center>
     <center>
-        <GridPane fx:id="mazeGridpane" maxHeight="-Infinity"
-                  maxWidth="-Infinity" minHeight="-Infinity"
-                  minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-                  stylesheets="@styles.css">
+        <GridPane fx:id="mazeGridpane" stylesheets="@styles.css">
         </GridPane>
     </center>
     <bottom>
-        <Button mnemonicParsing="false" onAction="#solve" text="Solve"
-                BorderPane.alignment="CENTER"/>
+        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#solve" text="Solve" HBox.hgrow="ALWAYS" />
+                <Button fx:id="nextLevelButton" defaultButton="true" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToNextLevel" text="Next level" HBox.hgrow="ALWAYS" />
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </HBox>
     </bottom>
 </BorderPane>
