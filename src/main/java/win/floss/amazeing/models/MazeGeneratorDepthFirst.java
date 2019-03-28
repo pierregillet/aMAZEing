@@ -12,15 +12,8 @@ public class MazeGeneratorDepthFirst implements MazeGeneratorStrategy {
     public Graph generate(int width, int height) {
         graph = new Graph(width, height);
         graph.getNodes().forEach(unvisitedNodes::addAll); // Passing the 2D array to 1 dimension
-
-//        Coordinates startPoint = new Coordinates(0, 0);
-//        Coordinates endPoint = new Coordinates(height, width);
-
-        int generatorStartingPoint = random.nextInt(unvisitedNodes.size());
-        NodePosition currentNodePosition = graph.getNodePosition(unvisitedNodes.get(generatorStartingPoint));
-
-        explore(currentNodePosition);
-
+        NodePosition startingNodePosition = graph.getNodePosition(0, 0);
+        explore(startingNodePosition);
         return graph;
     }
 
