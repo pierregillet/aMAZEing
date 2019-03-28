@@ -32,7 +32,7 @@ public class MazeGeneratorDepthFirst implements MazeGeneratorStrategy {
         }
     }
 
-    Cell getRandomUnvisitedNeighbour(Cell cell) {
+    private Cell getRandomUnvisitedNeighbour(Cell cell) {
         ArrayList<Cell> neighbouringNodes = graph.getNeighbouringNodePositions(cell);
         while (!neighbouringNodes.isEmpty()) {
             int randomNeighbourIndex = random.nextInt(neighbouringNodes.size());

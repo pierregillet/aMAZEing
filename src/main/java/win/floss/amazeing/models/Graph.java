@@ -80,19 +80,6 @@ public class Graph {
         return new Cell(node, rowIndex, columnIndex);
     }
 
-    public Cell getNodePosition(Node node) {
-        for (int rowIndex = 0; rowIndex < nodes.size(); rowIndex++) {
-            ArrayList<Node> row = nodes.get(rowIndex);
-            for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
-                Node currentNode = row.get(columnIndex);
-                if (node.equals(currentNode)) {
-                    return new Cell(currentNode, new Coordinates(rowIndex, columnIndex));
-                }
-            }
-        }
-        return null;
-    }
-
     public Cell getNodePosition(Coordinates coordinates) {
         Node currentNode = nodes.get(coordinates.getRowIndex()).get(coordinates.getColumnIndex());
         return new Cell(currentNode, coordinates);

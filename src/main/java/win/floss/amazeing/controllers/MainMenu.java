@@ -14,7 +14,7 @@ import java.net.URL;
 public class MainMenu {
 
     @FXML
-    public void startGame(ActionEvent event) {
+    public void startGame() {
         MazeGeneratorStrategy mazeGeneratorStrategy = new MazeGeneratorDepthFirst();
         MazeSolverStrategy mazeSolverStrategy = new MazeSolverBreadthFirst();
         Maze maze = new Maze(mazeGeneratorStrategy, mazeSolverStrategy, 1);
