@@ -9,10 +9,10 @@ public class MazeGeneratorDepthFirst implements MazeGeneratorStrategy {
     private Random random = new Random();
 
     @Override
-    public Graph generate(int width, int height) {
+    public Graph generate(int width, int height, Coordinates startingPoint, Coordinates endingPoint) {
         graph = new Graph(width, height);
         graph.getNodes().forEach(unvisitedNodes::addAll); // Passing the 2D array to 1 dimension
-        NodePosition startingNodePosition = graph.getNodePosition(0, 0);
+        NodePosition startingNodePosition = graph.getNodePosition(startingPoint);
         explore(startingNodePosition);
         return graph;
     }

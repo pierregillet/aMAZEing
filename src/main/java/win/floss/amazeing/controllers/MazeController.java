@@ -86,4 +86,9 @@ public class MazeController implements Initializable {
             }
         }
     }
+
+    @FXML
+    public void solve() {
+        maze.solve();
+    }
 }

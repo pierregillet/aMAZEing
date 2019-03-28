@@ -6,9 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import win.floss.amazeing.models.Maze;
-import win.floss.amazeing.models.MazeGeneratorDepthFirst;
-import win.floss.amazeing.models.MazeGeneratorStrategy;
+import win.floss.amazeing.models.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,7 +16,8 @@ public class MainMenu {
     @FXML
     public void startGame(ActionEvent event) {
         MazeGeneratorStrategy mazeGeneratorStrategy = new MazeGeneratorDepthFirst();
-        Maze maze = new Maze(mazeGeneratorStrategy, 1);
+        MazeSolverStrategy mazeSolverStrategy = new MazeSolverBreadthFirst();
+        Maze maze = new Maze(mazeGeneratorStrategy, mazeSolverStrategy, 1);
         MazeController controller = new MazeController(maze);
         URL url = getClass().getResource("/win/floss/amazeing/Maze.fxml");
 

@@ -93,6 +93,11 @@ public class Graph {
         return null;
     }
 
+    public NodePosition getNodePosition(Coordinates coordinates) {
+        Node currentNode = nodes.get(coordinates.getRowIndex()).get(coordinates.getColumnIndex());
+        return new NodePosition(currentNode, coordinates);
+    }
+
     public NodePosition searchNodeById(int id) {
         for (int rowIndex = 0; rowIndex < nodes.size(); rowIndex++) {
             ArrayList<Node> row = nodes.get(rowIndex);
