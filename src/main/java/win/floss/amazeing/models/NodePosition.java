@@ -2,24 +2,23 @@ package win.floss.amazeing.models;
 
 public class NodePosition {
     private Node node;
-    private int rowIndex;
-    private int columnIndex;
+    private Coordinates coordinates;
 
-    public NodePosition(Node node, int rowIndex, int columnIndex) {
+    public NodePosition(Node node, Coordinates coordinates) {
         this.node = node;
-        this.rowIndex = rowIndex;
-        this.columnIndex = columnIndex;
+        this.coordinates = coordinates;
+    }
+
+    public NodePosition(Node node, int row, int column) {
+        this.node = node;
+        this.coordinates = new Coordinates(row, column);
     }
 
     public Node getNode() {
         return node;
     }
 
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
-    public int getColumnIndex() {
-        return columnIndex;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 }
