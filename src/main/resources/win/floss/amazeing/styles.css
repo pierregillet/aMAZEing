@@ -8,3 +8,15 @@
     -fx-border-insets: 0;
     -fx-background-color: transparent;
 }
+
+#mazeGridpane > .visited {
+    -fx-background-color: lightskyblue;
+}
+
+#mazeGridpane > #startingPoint {
+    -fx-background-color: lightgreen;
+}
+
+#mazeGridpane > #endingPoint {
+    -fx-background-color: salmon;
+}

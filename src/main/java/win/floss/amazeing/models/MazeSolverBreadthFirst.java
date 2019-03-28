@@ -19,6 +19,7 @@ public class MazeSolverBreadthFirst implements MazeSolverStrategy {
             NodePosition currentNodePosition = frontier.pop();
             if (currentNodePosition.equals(endingNodePosition)) {
                 Deque<NodePosition> path = new ArrayDeque<>();
+                currentNodePosition = parentNodePosition.get(currentNodePosition);
                 while (!currentNodePosition.equals(startingNodePosition)) {
                     path.addFirst(currentNodePosition);
                     currentNodePosition = parentNodePosition.get(currentNodePosition);

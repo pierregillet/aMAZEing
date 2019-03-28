@@ -30,6 +30,7 @@ public class Maze {
             throw new NodeNotFoundException();
         } else {
             path.add(node);
+
         }
     }
 
@@ -41,4 +42,13 @@ public class Maze {
     public Graph getGraph() {
         return graph;
     }
+
+    public Coordinates getStartingPoint() {
+        return startingPoint;
+    }
+
+    public Coordinates getEndingPoint() {
+        return endingPoint;
+    }
+
 }
