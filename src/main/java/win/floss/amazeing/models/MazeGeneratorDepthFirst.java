@@ -1,13 +1,10 @@
 package win.floss.amazeing.models;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 
 public class MazeGeneratorDepthFirst implements MazeGeneratorStrategy {
     private Graph graph;
-    private ArrayList<Node> stack = new ArrayList<>();
+    private ArrayDeque<NodePosition> stack = new ArrayDeque<>();
     private ArrayList<Node> unvisitedNodes = new ArrayList<>();
     private Random random = new Random();
 
@@ -27,17 +24,19 @@ public class MazeGeneratorDepthFirst implements MazeGeneratorStrategy {
         return graph;
     }
 
-    void explore(NodePosition currentNodePosition) {
-        unvisitedNodes.remove(currentNodePosition.getNode());
-        NodePosition randomNeighbour = getRandomUnvisitedNeighbour(currentNodePosition);
-        while (null != randomNeighbour) {
-            graph.addEdge(randomNeighbour, currentNodePosition);
-            unvisitedNodes.remove(currentNodePosition.getNode());
-            stack.add(currentNodePosition.getNode());
-            explore(randomNeighbour);
-            randomNeighbour = getRandomUnvisitedNeighbour(currentNodePosition);
+    private void explore(NodePosition startingNodePosition) {
+        NodePosition currentNodePosition = startingNodePosition;
+        while (!unvisitedNodes.isEmpty()) {
+            NodePosition randomNeighbour = getRandomUnvisitedNeighbour(currentNodePosition);
+            if (null != randomNeighbour) {
+                stack.push(randomNeighbour);
+                graph.addEdge(randomNeighbour, currentNodePosition);
+                currentNodePosition = randomNeighbour;
+                unvisitedNodes.remove(currentNodePosition.getNode());
+            } else if (!stack.isEmpty()) {
+                currentNodePosition = stack.pop();
+            }
         }
-        return;
     }
 
     NodePosition getRandomUnvisitedNeighbour(NodePosition nodePosition) {
