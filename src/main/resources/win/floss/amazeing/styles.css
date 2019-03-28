@@ -4,8 +4,7 @@
 
 #mazeGridpane > .button {
     -fx-background-radius: 0;
-    -fx-border-style: none;
-    -fx-border-width: 0;
+    -fx-border-style: solid;
     -fx-border-insets: 0;
     -fx-background-color: transparent;
 }

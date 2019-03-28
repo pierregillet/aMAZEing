@@ -72,6 +72,14 @@ public class MazeController implements Initializable {
                 Graph currentGraph = maze.getGraph();
                 Vector<Orientation> walls = currentGraph.getWalls(currentNodePosition);
                 Button button = new Button();
+                String topBorder = walls.contains(Orientation.TOP) ? "1" : "0";
+                String rightBorder = walls.contains(Orientation.RIGHT) ? "1" : "0";
+                String bottomBorder = walls.contains(Orientation.BOTTOM) ? "1" : "0";
+                String leftBorder = walls.contains(Orientation.LEFT) ? "1" : "0";
+                String style = "-fx-border-width: " + topBorder + " "
+                        + rightBorder + " " + bottomBorder + " "
+                        + leftBorder + ";";
+                button.setStyle(style);
                 button.setOnAction(new MazeCellHandler(maze, id));
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 mazeGridpane.add(button, column, row);
