@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Graph {
     private ArrayList<ArrayList<Node>> nodes;
-    private HashMap<Node, ArrayList<NodePosition>> adjacencyList;
+    private HashMap<Node, ArrayList<Cell>> adjacencyList;
 
     Graph(int width, int height) {
         nodes = new ArrayList<>(height);
@@ -25,18 +25,18 @@ public class Graph {
         }
     }
 
-    public ArrayList<Orientation> getWalls(NodePosition nodePosition) {
+    public ArrayList<Orientation> getWalls(Cell cell) {
         ArrayList<Orientation> walls = new ArrayList<>();
 
-        Node currentNode = nodePosition.getNode();
-        int rowIndex = nodePosition.getCoordinates().getRowIndex();
-        int columnIndex = nodePosition.getCoordinates().getColumnIndex();
+        Node currentNode = cell.getNode();
+        int rowIndex = cell.getCoordinates().getRowIndex();
+        int columnIndex = cell.getCoordinates().getColumnIndex();
 
         if (0 == rowIndex) {
             walls.add(Orientation.TOP);
         } else {
-            NodePosition topNode = getNodePosition(rowIndex - 1, columnIndex);
-            ArrayList<NodePosition> adjacentNodes = getAdjacentNodes(currentNode);
+            Cell topNode = getNodePosition(rowIndex - 1, columnIndex);
+            ArrayList<Cell> adjacentNodes = getAdjacentNodes(currentNode);
             if (null != adjacentNodes && !adjacentNodes.contains(topNode)) {
                 walls.add(Orientation.TOP);
             }
@@ -45,8 +45,8 @@ public class Graph {
         if (nodes.get(rowIndex).size() - 1 == columnIndex) {
             walls.add(Orientation.RIGHT);
         } else {
-            NodePosition rightNode = getNodePosition(rowIndex, columnIndex + 1);
-            ArrayList<NodePosition> adjacentNodes = getAdjacentNodes(currentNode);
+            Cell rightNode = getNodePosition(rowIndex, columnIndex + 1);
+            ArrayList<Cell> adjacentNodes = getAdjacentNodes(currentNode);
             if (null != adjacentNodes && !adjacentNodes.contains(rightNode)) {
                 walls.add(Orientation.RIGHT);
             }
@@ -55,8 +55,8 @@ public class Graph {
         if (nodes.size() - 1 == rowIndex) {
             walls.add(Orientation.BOTTOM);
         } else {
-            NodePosition bottomNode = getNodePosition(rowIndex + 1, columnIndex);
-            ArrayList<NodePosition> adjacentNodes = getAdjacentNodes(currentNode);
+            Cell bottomNode = getNodePosition(rowIndex + 1, columnIndex);
+            ArrayList<Cell> adjacentNodes = getAdjacentNodes(currentNode);
             if (null != adjacentNodes && !adjacentNodes.contains(bottomNode)) {
                 walls.add(Orientation.BOTTOM);
             }
@@ -65,8 +65,8 @@ public class Graph {
         if (0 == columnIndex) {
             walls.add(Orientation.LEFT);
         } else {
-            NodePosition leftNode = getNodePosition(rowIndex, columnIndex - 1);
-            ArrayList<NodePosition> adjacentNodes = getAdjacentNodes(currentNode);
+            Cell leftNode = getNodePosition(rowIndex, columnIndex - 1);
+            ArrayList<Cell> adjacentNodes = getAdjacentNodes(currentNode);
             if (null != adjacentNodes && !adjacentNodes.contains(leftNode)) {
                 walls.add(Orientation.LEFT);
             }
@@ -75,82 +75,82 @@ public class Graph {
         return walls;
     }
 
-    public NodePosition getNodePosition(int rowIndex, int columnIndex) {
+    public Cell getNodePosition(int rowIndex, int columnIndex) {
         Node node = nodes.get(rowIndex).get(columnIndex);
-        return new NodePosition(node, rowIndex, columnIndex);
+        return new Cell(node, rowIndex, columnIndex);
     }
 
-    public NodePosition getNodePosition(Node node) {
+    public Cell getNodePosition(Node node) {
         for (int rowIndex = 0; rowIndex < nodes.size(); rowIndex++) {
             ArrayList<Node> row = nodes.get(rowIndex);
             for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
                 Node currentNode = row.get(columnIndex);
                 if (node.equals(currentNode)) {
-                    return new NodePosition(currentNode, new Coordinates(rowIndex, columnIndex));
+                    return new Cell(currentNode, new Coordinates(rowIndex, columnIndex));
                 }
             }
         }
         return null;
     }
 
-    public NodePosition getNodePosition(Coordinates coordinates) {
+    public Cell getNodePosition(Coordinates coordinates) {
         Node currentNode = nodes.get(coordinates.getRowIndex()).get(coordinates.getColumnIndex());
-        return new NodePosition(currentNode, coordinates);
+        return new Cell(currentNode, coordinates);
     }
 
-    public NodePosition searchNodeById(int id) {
+    public Cell searchNodeById(int id) {
         for (int rowIndex = 0; rowIndex < nodes.size(); rowIndex++) {
             ArrayList<Node> row = nodes.get(rowIndex);
             for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
                 Node node = row.get(columnIndex);
                 if (node.getId() == id) {
-                    return new NodePosition(node, new Coordinates(rowIndex, columnIndex));
+                    return new Cell(node, new Coordinates(rowIndex, columnIndex));
                 }
             }
         }
         return null;
     }
 
-    public ArrayList<NodePosition> getAdjacentNodes(Node node) {
+    public ArrayList<Cell> getAdjacentNodes(Node node) {
         return adjacencyList.get(node);
     }
 
-    public ArrayList<NodePosition> getNeighbouringNodePositions(NodePosition nodePosition) {
-        ArrayList<NodePosition> neighbouringNodes = new ArrayList<>();
+    public ArrayList<Cell> getNeighbouringNodePositions(Cell cell) {
+        ArrayList<Cell> neighbouringNodes = new ArrayList<>();
 
-        int rowIndex = nodePosition.getCoordinates().getRowIndex();
-        int columnIndex = nodePosition.getCoordinates().getColumnIndex();
+        int rowIndex = cell.getCoordinates().getRowIndex();
+        int columnIndex = cell.getCoordinates().getColumnIndex();
 
         if (0 != rowIndex) {
             int topRowIndex = rowIndex - 1;
             Node topNode = nodes.get(topRowIndex).get(columnIndex);
-            neighbouringNodes.add(new NodePosition(topNode, new Coordinates(topRowIndex, columnIndex)));
+            neighbouringNodes.add(new Cell(topNode, new Coordinates(topRowIndex, columnIndex)));
         }
 
         if (nodes.get(rowIndex).size() - 1 != columnIndex) {
             int rightColumnIndex = columnIndex + 1;
             Node rightNode = nodes.get(rowIndex).get(rightColumnIndex);
-            neighbouringNodes.add(new NodePosition(rightNode, new Coordinates(rowIndex, rightColumnIndex)));
+            neighbouringNodes.add(new Cell(rightNode, new Coordinates(rowIndex, rightColumnIndex)));
         }
 
         if (nodes.size() - 1 != rowIndex) {
             int bottomRowIndex = rowIndex + 1;
             Node bottomNode = nodes.get(bottomRowIndex).get(columnIndex);
-            neighbouringNodes.add(new NodePosition(bottomNode, new Coordinates(bottomRowIndex, columnIndex)));
+            neighbouringNodes.add(new Cell(bottomNode, new Coordinates(bottomRowIndex, columnIndex)));
         }
 
         if (0 != columnIndex) {
             int leftColumnIndex = columnIndex - 1;
             Node leftNode = nodes.get(rowIndex).get(leftColumnIndex);
-            neighbouringNodes.add(new NodePosition(leftNode, new Coordinates(rowIndex, leftColumnIndex)));
+            neighbouringNodes.add(new Cell(leftNode, new Coordinates(rowIndex, leftColumnIndex)));
         }
 
         return neighbouringNodes;
     }
 
-    public void addEdge(NodePosition firstNodePosition, NodePosition secondNodePosition) {
-        adjacencyList.get(firstNodePosition.getNode()).add(secondNodePosition);
-        adjacencyList.get(secondNodePosition.getNode()).add(firstNodePosition);
+    public void addEdge(Cell firstCell, Cell secondCell) {
+        adjacencyList.get(firstCell.getNode()).add(secondCell);
+        adjacencyList.get(secondCell.getNode()).add(firstCell);
     }
 
 
@@ -158,7 +158,7 @@ public class Graph {
         return nodes;
     }
 
-    public HashMap<Node, ArrayList<NodePosition>> getAdjacencyList() {
+    public HashMap<Node, ArrayList<Cell>> getAdjacencyList() {
         return adjacencyList;
     }
 

@@ -4,7 +4,7 @@ import java.util.*;
 
 public class MazeGeneratorDepthFirst implements MazeGeneratorStrategy {
     private Graph graph;
-    private ArrayDeque<NodePosition> stack = new ArrayDeque<>();
+    private ArrayDeque<Cell> stack = new ArrayDeque<>();
     private ArrayList<Node> unvisitedNodes = new ArrayList<>();
     private Random random = new Random();
 
@@ -12,31 +12,31 @@ public class MazeGeneratorDepthFirst implements MazeGeneratorStrategy {
     public Graph generate(int width, int height, Coordinates startingPoint, Coordinates endingPoint) {
         graph = new Graph(width, height);
         graph.getNodes().forEach(unvisitedNodes::addAll); // Passing the 2D array to 1 dimension
-        NodePosition startingNodePosition = graph.getNodePosition(startingPoint);
-        explore(startingNodePosition);
+        Cell startingCell = graph.getNodePosition(startingPoint);
+        explore(startingCell);
         return graph;
     }
 
-    private void explore(NodePosition startingNodePosition) {
-        NodePosition currentNodePosition = startingNodePosition;
+    private void explore(Cell startingCell) {
+        Cell currentCell = startingCell;
         while (!unvisitedNodes.isEmpty()) {
-            NodePosition randomNeighbour = getRandomUnvisitedNeighbour(currentNodePosition);
+            Cell randomNeighbour = getRandomUnvisitedNeighbour(currentCell);
             if (null != randomNeighbour) {
                 stack.push(randomNeighbour);
-                graph.addEdge(randomNeighbour, currentNodePosition);
-                currentNodePosition = randomNeighbour;
-                unvisitedNodes.remove(currentNodePosition.getNode());
+                graph.addEdge(randomNeighbour, currentCell);
+                currentCell = randomNeighbour;
+                unvisitedNodes.remove(currentCell.getNode());
             } else if (!stack.isEmpty()) {
-                currentNodePosition = stack.pop();
+                currentCell = stack.pop();
             }
         }
     }
 
-    NodePosition getRandomUnvisitedNeighbour(NodePosition nodePosition) {
-        ArrayList<NodePosition> neighbouringNodes = graph.getNeighbouringNodePositions(nodePosition);
+    Cell getRandomUnvisitedNeighbour(Cell cell) {
+        ArrayList<Cell> neighbouringNodes = graph.getNeighbouringNodePositions(cell);
         while (!neighbouringNodes.isEmpty()) {
             int randomNeighbourIndex = random.nextInt(neighbouringNodes.size());
-            NodePosition randomNeighbour = neighbouringNodes.get(randomNeighbourIndex);
+            Cell randomNeighbour = neighbouringNodes.get(randomNeighbourIndex);
 
             if (!unvisitedNodes.contains(randomNeighbour.getNode())) {
                 neighbouringNodes.remove(randomNeighbour);

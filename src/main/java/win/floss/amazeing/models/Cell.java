@@ -2,16 +2,16 @@ package win.floss.amazeing.models;
 
 import java.util.Objects;
 
-public class NodePosition {
+public class Cell {
     private Node node;
     private Coordinates coordinates;
 
-    public NodePosition(Node node, Coordinates coordinates) {
+    public Cell(Node node, Coordinates coordinates) {
         this.node = node;
         this.coordinates = coordinates;
     }
 
-    public NodePosition(Node node, int row, int column) {
+    public Cell(Node node, int row, int column) {
         this.node = node;
         this.coordinates = new Coordinates(row, column);
     }
@@ -20,7 +20,7 @@ public class NodePosition {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NodePosition that = (NodePosition) o;
+        Cell that = (Cell) o;
         return node.equals(that.node) &&
                coordinates.equals(that.coordinates);
     }

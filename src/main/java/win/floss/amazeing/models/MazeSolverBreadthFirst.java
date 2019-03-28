@@ -8,30 +8,30 @@ import java.util.HashMap;
 public class MazeSolverBreadthFirst implements MazeSolverStrategy {
 
     @Override
-    public Deque<NodePosition> solve(Graph graph, NodePosition startingNodePosition,
-                                         NodePosition endingNodePosition) {
-        Deque<NodePosition> frontier = new ArrayDeque<>();
-        ArrayList<NodePosition> discoveredNodes = new ArrayList<>();
-        HashMap<NodePosition, NodePosition> parentNodePosition = new HashMap<>();
-        frontier.add(startingNodePosition);
+    public Deque<Cell> solve(Graph graph, Cell startingCell,
+                             Cell endingCell) {
+        Deque<Cell> frontier = new ArrayDeque<>();
+        ArrayList<Cell> discoveredNodes = new ArrayList<>();
+        HashMap<Cell, Cell> parentNodePosition = new HashMap<>();
+        frontier.add(startingCell);
 
         while (!frontier.isEmpty()) {
-            NodePosition currentNodePosition = frontier.pop();
-            if (currentNodePosition.equals(endingNodePosition)) {
-                Deque<NodePosition> path = new ArrayDeque<>();
-                currentNodePosition = parentNodePosition.get(currentNodePosition);
-                while (!currentNodePosition.equals(startingNodePosition)) {
-                    path.addFirst(currentNodePosition);
-                    currentNodePosition = parentNodePosition.get(currentNodePosition);
+            Cell currentCell = frontier.pop();
+            if (currentCell.equals(endingCell)) {
+                Deque<Cell> path = new ArrayDeque<>();
+                currentCell = parentNodePosition.get(currentCell);
+                while (!currentCell.equals(startingCell)) {
+                    path.addFirst(currentCell);
+                    currentCell = parentNodePosition.get(currentCell);
                 }
                 return path;
             }
-            ArrayList<NodePosition> adjacentNodes = graph.getAdjacentNodes(currentNodePosition.getNode());
-            for (NodePosition adjacentNodePosition : adjacentNodes) {
-                if (!discoveredNodes.contains(adjacentNodePosition)) {
-                    discoveredNodes.add(adjacentNodePosition);
-                    parentNodePosition.put(adjacentNodePosition, currentNodePosition);
-                    frontier.add(adjacentNodePosition);
+            ArrayList<Cell> adjacentNodes = graph.getAdjacentNodes(currentCell.getNode());
+            for (Cell adjacentCell : adjacentNodes) {
+                if (!discoveredNodes.contains(adjacentCell)) {
+                    discoveredNodes.add(adjacentCell);
+                    parentNodePosition.put(adjacentCell, currentCell);
+                    frontier.add(adjacentCell);
                 }
             }
         }

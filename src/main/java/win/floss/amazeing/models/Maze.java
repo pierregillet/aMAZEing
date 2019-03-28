@@ -1,5 +1,6 @@
 package win.floss.amazeing.models;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 
@@ -10,7 +11,7 @@ public class Maze {
     private Coordinates startingPoint;
     private Coordinates endingPoint;
     private int level;
-    private ArrayList<Node> path = new ArrayList<>();
+    private Deque<Cell> path = new ArrayDeque<>();
 
     public Maze(MazeGeneratorStrategy mazeGenerator,
                 MazeSolverStrategy mazeSolver, int level) {
@@ -19,25 +20,45 @@ public class Maze {
         this.level = level;
         int width = level * 10;
         int height = level * 10;
-        this.startingPoint = new Coordinates(0, 0);
-        this.endingPoint = new Coordinates(height - 1, width - 1);
-        this.graph = mazeGenerator.generate(width, height, startingPoint, endingPoint);
+        startingPoint = new Coordinates(0, 0);
+        endingPoint = new Coordinates(height - 1, width - 1);
+        graph = mazeGenerator.generate(width, height, startingPoint, endingPoint);
+        path.add(graph.getNodePosition(startingPoint));
     }
 
-    public void visitNode(int id) throws NodeNotFoundException {
-        Node node = graph.searchNodeById(id).getNode();
-        if (null == node) {
-            throw new NodeNotFoundException();
-        } else {
-            path.add(node);
-
-        }
-    }
-
-    public Deque<NodePosition> solve() {
+    public Deque<Cell> solve() {
         return mazeSolver.solve(graph, graph.getNodePosition(startingPoint),
                          graph.getNodePosition(endingPoint));
     }
+
+    public boolean isInPath(Cell cell) {
+        return path.contains(cell);
+    }
+
+    public void addToPath(Cell cell) {
+        path.add(cell);
+    }
+
+    public Cell getPathLastElement() {
+        return path.peekLast();
+    }
+
+    /**
+     * @param targetCell Cell until which we want to backtrack
+     * @return A list of cells removed from path
+     * @throws NodeNotFoundException in case node can't be found in path
+     */
+    public ArrayList<Cell> backtrackPathTo(Cell targetCell) throws NodeNotFoundException {
+        if (path.isEmpty() || !isInPath(targetCell)) {
+            throw new NodeNotFoundException();
+        }
+        ArrayList<Cell> removedCells = new ArrayList<>();
+        while (!path.peekLast().equals(targetCell)) {
+            removedCells.add(path.pollLast());
+        }
+        return removedCells;
+    }
+
 
     public Graph getGraph() {
         return graph;

@@ -38,7 +38,7 @@ public class MazeController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             try {
-                maze.visitNode(id);
+                visitNode(id);
             } catch (NodeNotFoundException e) {
                 // This exception can be ignored for now.
             }
@@ -74,9 +74,9 @@ public class MazeController implements Initializable {
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 int id = row * width + column;
-                NodePosition currentNodePosition = maze.getGraph().searchNodeById(id);
+                Cell currentCell = maze.getGraph().searchNodeById(id);
                 Graph currentGraph = maze.getGraph();
-                ArrayList<Orientation> walls = currentGraph.getWalls(currentNodePosition);
+                ArrayList<Orientation> walls = currentGraph.getWalls(currentCell);
                 Button button = new Button();
 
                 String topBorder = walls.contains(Orientation.TOP) ? "2" : "0";
@@ -105,10 +105,10 @@ public class MazeController implements Initializable {
 
     @FXML
     public void solve() {
-        Deque<NodePosition> path = maze.solve();
-        for(NodePosition nodePosition : path) {
+        Deque<Cell> path = maze.solve();
+        for(Cell cell : path) {
             try {
-                Node node = Objects.requireNonNull(getNodeByCoordinates(nodePosition.getCoordinates(), mazeGridpane));
+                Node node = Objects.requireNonNull(getNodeByCoordinates(cell.getCoordinates()));
                 node.getStyleClass().add("visited");
                 if (node instanceof Button) {
                     ((Button) node).setText("X");
@@ -119,10 +119,49 @@ public class MazeController implements Initializable {
         }
     }
 
-    private javafx.scene.Node getNodeByCoordinates (final Coordinates coordinates, GridPane gridPane) {
-        ObservableList<Node> children = gridPane.getChildren();
+    private void visitNode(int id) throws NodeNotFoundException {
+        Graph graph = maze.getGraph();
+        Cell selectedCell = graph.searchNodeById(id);
+        if (null == selectedCell) {
+            throw new NodeNotFoundException();
+        } else {
+            ArrayList<Cell> adjacentNodes = graph.getAdjacentNodes(maze.getPathLastElement().getNode());
+            if (maze.isInPath(selectedCell)) {
+                // if cell already in path, backtrack and remove style
+                ArrayList<Cell> removedCells = maze.backtrackPathTo(selectedCell);
+                removedCells.forEach(cell -> {
+                    Node node = getNodeByCoordinates(cell.getCoordinates());
+                    if (null != node) {
+                        removeVisitedStyle(node);
+                    }
+                });
+            } else if (adjacentNodes.contains(selectedCell)) {
+                // else if it's a node that can be visited next add it to path
+                if (selectedCell.getCoordinates().equals(maze.getEndingPoint())) {
+                    System.out.println("Well done ! you solved the maze !");
+                } else {
+                    Node node = getNodeByCoordinates(selectedCell.getCoordinates());
+                    if (null != node) {
+                        setVisitedStyle(node);
+                    }
+                    maze.addToPath(selectedCell);
+                }
+            }
+        }
+    }
 
-        for (javafx.scene.Node node : children) {
+    private void setVisitedStyle(Node node) {
+        node.getStyleClass().add("visited");
+    }
+
+    private void removeVisitedStyle(Node node) {
+        node.getStyleClass().removeIf(style -> style.equals("visited"));
+    }
+
+    private Node getNodeByCoordinates (final Coordinates coordinates) {
+        ObservableList<Node> children = mazeGridpane.getChildren();
+
+        for (Node node : children) {
             if(GridPane.getRowIndex(node).equals(coordinates.getRowIndex())
                && GridPane.getColumnIndex(node).equals(coordinates.getColumnIndex())) {
                 return node;
