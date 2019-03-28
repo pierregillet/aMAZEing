@@ -1,5 +1,5 @@
 package win.floss.amazeing.models;
 
-interface MazeGeneratorStrategy {
+public interface MazeGeneratorStrategy {
     Graph generate(int width, int height);
 }

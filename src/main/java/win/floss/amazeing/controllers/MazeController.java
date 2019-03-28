@@ -13,8 +13,8 @@ import javafx.scene.layout.RowConstraints;
 import win.floss.amazeing.models.*;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
 public class MazeController implements Initializable {
     private Maze maze;
@@ -70,7 +70,7 @@ public class MazeController implements Initializable {
                 int id = row * width + column;
                 NodePosition currentNodePosition = maze.getGraph().searchNodeById(id);
                 Graph currentGraph = maze.getGraph();
-                Vector<Orientation> walls = currentGraph.getWalls(currentNodePosition);
+                ArrayList<Orientation> walls = currentGraph.getWalls(currentNodePosition);
                 Button button = new Button();
                 String topBorder = walls.contains(Orientation.TOP) ? "1" : "0";
                 String rightBorder = walls.contains(Orientation.RIGHT) ? "1" : "0";

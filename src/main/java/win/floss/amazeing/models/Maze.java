@@ -1,15 +1,17 @@
 package win.floss.amazeing.models;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class Maze {
+    private MazeGeneratorStrategy mazeGenerator;
     private Graph graph;
     private int level;
-    private Vector<Node> path = new Vector<>();
+    private ArrayList<Node> path = new ArrayList<>();
 
-    public Maze(int level) {
+    public Maze(MazeGeneratorStrategy mazeGenerator, int level) {
+        this.mazeGenerator = mazeGenerator;
         this.level = level;
-        this.graph = new Graph(level * 10, level * 10);
+        this.graph = mazeGenerator.generate(level * 10, level * 10);
     }
 
     public void visitNode(int id) throws NodeNotFoundException {

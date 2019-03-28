@@ -1,17 +1,17 @@
 package win.floss.amazeing.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 
 public class Graph {
-    private Vector<Vector<Node>> nodes;
-    private HashMap<Node, Vector<Node>> adjacencyList;
+    private ArrayList<ArrayList<Node>> nodes;
+    private HashMap<Node, ArrayList<Node>> adjacencyList;
 
     Graph(int width, int height) {
         this.adjacencyList = new HashMap<>();
-        this.nodes = new Vector<>(height);
+        this.nodes = new ArrayList<>(height);
         for (int i = 0; i < height; i++) {
-            Vector<Node> row = new Vector<>(width);
+            ArrayList<Node> row = new ArrayList<>(width);
             for (int j = 0; j < width; j++) {
                 row.add(j, new Node(i * width + j));
             }
@@ -19,8 +19,8 @@ public class Graph {
         }
     }
 
-    public Vector<Orientation> getWalls(NodePosition nodePosition) {
-        Vector<Orientation> walls = new Vector<>();
+    public ArrayList<Orientation> getWalls(NodePosition nodePosition) {
+        ArrayList<Orientation> walls = new ArrayList<>();
 
         Node currentNode = nodePosition.getNode();
         int rowIndex = nodePosition.getRowIndex();
@@ -30,7 +30,7 @@ public class Graph {
             walls.add(Orientation.TOP);
         } else {
             Node topNode = nodes.get(rowIndex - 1).get(columnIndex);
-            Vector<Node> adjacentNodes = getAdjacentNodes(currentNode);
+            ArrayList<Node> adjacentNodes = getAdjacentNodes(currentNode);
             if (null != adjacentNodes && !adjacentNodes.contains(topNode)) {
                 walls.add(Orientation.TOP);
             }
@@ -40,7 +40,7 @@ public class Graph {
             walls.add(Orientation.BOTTOM);
         } else {
             Node bottomNode = nodes.get(rowIndex + 1).get(columnIndex);
-            Vector<Node> adjacentNodes = getAdjacentNodes(currentNode);
+            ArrayList<Node> adjacentNodes = getAdjacentNodes(currentNode);
             if (null != adjacentNodes && !adjacentNodes.contains(bottomNode)) {
                 walls.add(Orientation.BOTTOM);
             }
@@ -50,7 +50,7 @@ public class Graph {
             walls.add(Orientation.LEFT);
         } else {
             Node leftNode = nodes.get(rowIndex).get(columnIndex - 1);
-            Vector<Node> adjacentNodes = getAdjacentNodes(currentNode);
+            ArrayList<Node> adjacentNodes = getAdjacentNodes(currentNode);
             if (null != adjacentNodes && !adjacentNodes.contains(leftNode)) {
                 walls.add(Orientation.LEFT);
             }
@@ -60,7 +60,7 @@ public class Graph {
             walls.add(Orientation.RIGHT);
         } else {
             Node rightNode = nodes.get(rowIndex).get(columnIndex + 1);
-            Vector<Node> adjacentNodes = getAdjacentNodes(currentNode);
+            ArrayList<Node> adjacentNodes = getAdjacentNodes(currentNode);
             if (null != adjacentNodes && !adjacentNodes.contains(rightNode)) {
                 walls.add(Orientation.RIGHT);
             }
@@ -71,7 +71,7 @@ public class Graph {
 
     public NodePosition searchNodeById(int id) {
         for (int rowIndex = 0; rowIndex < nodes.size(); rowIndex++) {
-            Vector<Node> row = nodes.get(rowIndex);
+            ArrayList<Node> row = nodes.get(rowIndex);
             for (int columnIndex = 0; columnIndex < row.size(); columnIndex++) {
                 Node node = row.get(columnIndex);
                 if (node.getId() == id) {
@@ -82,15 +82,15 @@ public class Graph {
         return null;
     }
 
-    public Vector<Node> getAdjacentNodes(Node node) {
+    public ArrayList<Node> getAdjacentNodes(Node node) {
         return adjacencyList.get(node);
     }
 
-    public Vector<Vector<Node>> getNodes() {
+    public ArrayList<ArrayList<Node>> getNodes() {
         return nodes;
     }
 
-    public HashMap<Node, Vector<Node>> getAdjacencyList() {
+    public HashMap<Node, ArrayList<Node>> getAdjacencyList() {
         return adjacencyList;
     }
 
